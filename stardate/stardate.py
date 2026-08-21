@@ -1,3 +1,4 @@
+import datetime
 import datetime as dt
 import math
 
@@ -28,7 +29,9 @@ hoursInDay = 30
 minutesInHour = 60
 secInMin = 60
 # zeroDayGreg = datetime()
-# zeroDayJules = datetime()
+
+# zero day in Julian Calendar
+zeroDayJules = datetime.datetime(1970, 7, 31, 0, 0, 0)
 
 
 # Functions
@@ -71,6 +74,16 @@ class stardate:
             else:
                     self.datum[i] = when[i]
 
+    # Set the object's year to the converted Stellar Year
+    def setYear(self, when: str):
+        self.datum[0] = when
+
+    # Set the object's year to the unconverted Gregorian year
+    def conv_setYear(self, when: dt.datetime):
+        JC = gregToJulianFull(when)
+        self.datum[0] = self.calcDateJ(JC)[0]
+
+
     def decToHex(self, dec: int):
         hex = ""
         buff = []
@@ -99,27 +112,35 @@ class stardate:
 
         return dec
 
-    def calcDate(self, Jules: dt.datetime):
+    def calcDateJ(self, Jules: dt.datetime):
         # take the parts of the date and calculate the stardate (INCLUDING HOURS/MINUTES/SECONDS)
-        when = 0.0
-        # calculate the star year
-        year = 0
+        when = []*6
 
-        when += year*1000
+        # calculate the days since zero. this operation
+        # returns a dt.timedelta obj that contains the
+        # difference in days, hours, minutes, etc
+        delta = Jules - zeroDayJules
+        # calculate the hours since zero
+        Y = Jules.year - zeroDayJules.year
 
-        # calculate star day
-        day = 0
+        Hours = (delta.days*24)
 
-        when += day
+        # calculate the stellar year and convert to hex
+        year = math.floor((Hours/30 - Y*0.25)/360)
+        when[0] = self.decToHex(year)
 
-        # calculate star hour
-        hour = 0
+        # convert days (floor it to keep it whole)
+        # TODO
+        # [] refine formula for days
+        #   - how do we whittle the days elapsed down
+        #     to just the incomplete year?
+        #   - math.floor(H/60 - (H/60)/360)
+        #   -
+        day = math.floor(Hours/60)
+        when[1] = self.decToHex(day)
 
-        when += hour/100
+        # convert hours
+        delta.seconds
 
-        # calculate star minute
-        minute = 0
-
-        when += minute/10000
-
+        return when
 
