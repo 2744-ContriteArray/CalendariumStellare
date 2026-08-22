@@ -23,9 +23,9 @@ Where $D$ is the gap of 13 days. This is typically listed as the conversion for 
 
 ### Converting Julian Calendar to Stardate
 Our formula then for converting to a stellar year ($SY$) is 
-		$SY = floor(\frac{H/30 - Y*0.25}{360})$
-where $Y$ is the Julian years since (*zero day tbd*), $D$ is the Julian *days* since (*zero day tbd*), and $H$ is the *hours* since then. We start by taking $H$ and dividing by 30 to get the stellar days since (*zero day tbd*). Then we multiply $Y$ by $\frac{1}{4}$ and then subtract the product to negate leap years. This calendar isn't based on Earth so we don't need to account for those! We then divide all of that by 360 to get the year, and we round it down with the $floor()$ function to remove floating point digits created from the incomplete day and year.
+		$SY = floor(\frac{H\div30 - Y\times0.25}{360})$
+where $Y$ is the Julian years since 01/01/1970, $D$ is the Julian *days* since 01/01/1970, and $H$ is the *hours* since then. We start by taking $H$ and dividing by 30 to get the stellar days since 01/01/1970. Then we multiply $Y$ by $\frac{1}{4}$ and then subtract the product to negate leap years. This calendar isn't based on Earth so we don't need to account for those! We then divide all of that by 360 to get the year, and we round it down with the $floor()$ function to remove floating point digits created from the incomplete day and year.
 
 # Calculation Independent of Earth Calendars
 
-Stardates are counted onward from (*zero day tbd*).
+Stardates are counted onward from 01/01/1970 at 0h00 on the Julian calendar. Why? Because it works!
