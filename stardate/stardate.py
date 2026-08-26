@@ -172,24 +172,45 @@ class stardate:
         # calculate the hours since zero
         Y = Jules.year - zeroDayJules.year
 
-        Hours = (delta.days*24)
+        H = (delta.days*24)
 
         # calculate the stellar year and convert to hex
-        year = math.floor((Hours/30 - Y*0.25)/360)
-        when[0] = self.decToHex(year)
+        StellarYear = math.floor((H/30 - Y*0.25)/360)
+        when[0] = self.decToHex(StellarYear)
 
         # convert days (floor it to keep it whole)
         # TODO
         # [] refine formula for days
         #   - how do we whittle the days elapsed down
         #     to just the incomplete year?
-        #   - math.floor(H/60 - (H/60)/360)
-        #   -
-        day = math.floor(Hours/30)
-        when[1] = self.decToHex(day)
+        #   - math.floor(H/60 - H/30)%360
+
+        # calculate days and then take the remainder of dividing that by 360
+        StellarDay = math.floor(H/30 - Y*0.25)%360
+        when[1] = self.decToHex(StellarDay)
 
         # convert hours
-        delta.seconds
+        # Timedelta objects return seconds, not minutes, and our formula requires
+        # minutes. take those seconds since 0day and
+        # divide by 60 in order to yield minutes
+        M = math.floor(delta.seconds/60)
+
+        # D (Julian days elapsed) = floor(Julian hours elapsed/30)
+        # Y (Julian years elapsed) = floor(D/360)
+        # M (Julian minutes elapsed) = floor(Seconds/60)
+        # H (Julian hours elapsed) = floor(M/60) divided by 60 to yield the elapsed hours
+        # Can also be found via H = timedelta.days*24
+        # SH = H mod 30 to take the remainder of completed days
+        StellarHour = H%30
+        when[2] = str(StellarHour)
+
+        # Calculate stellar minutes
+
+        # when[4] =
+
+        # Calculate stellar seconds
+
+        # when[5] =
 
         return when
 
@@ -198,3 +219,5 @@ class stardate:
         when = [" "]*6
 
         return when
+
+    #def calcDateInd(self):
