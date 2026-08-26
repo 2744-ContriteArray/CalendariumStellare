@@ -74,6 +74,42 @@ class stardate:
             else:
                     self.datum[i] = when[i]
 
+## CONVERSION METHODS
+# Run formulae for converting from Julian Calendar
+#    def __ConvYear(self, Jules: dt.datetime):
+#        year = " "
+
+#        return year
+
+#    def __ConvDay(self, Jules: dt.datetime):
+#        day = " "
+
+#        return day
+
+#    def __ConvHour(self, Jules: dt.datetime):
+#        hour = " "
+
+#        return hour
+
+## CALCULATION METHODS
+# Run formulae for calculating independent of other calendars
+
+    ## def __CalcYear(self):
+    #     year = " "
+    #
+    #     return year
+    #
+    # def __CalcDay(self):
+    #     day = " "
+    #
+    #     return day
+    #
+    # def __CalcHour(self):
+    #     hour = " "
+    #
+    #     return hour
+
+
     # Set the object's year to the converted Stellar Year
     def setYear(self, when: str):
         self.datum[0] = when
@@ -82,7 +118,6 @@ class stardate:
     def conv_setYear(self, when: dt.datetime):
         JC = gregToJulianFull(when)
         self.datum[0] = self.calcDateJ(JC)[0]
-
 
     def decToHex(self, dec: int):
         hex = ""
@@ -112,6 +147,20 @@ class stardate:
 
         return dec
 
+    def calcDateG(self, Greg: dt.datetime):
+        when1 = gregToJulianFull(Greg)
+
+        when2 = self.calcDateJ(self, when1)
+        return when2
+
+# NOT including hours/minutes
+    def calcDateGpart(self, Greg: dt.date):
+        when1 = gregToJulianPart(Greg)
+
+        when2 = self.calcDateJ(when1)
+
+        return when2
+
     def calcDateJ(self, Jules: dt.datetime):
         # take the parts of the date and calculate the stardate (INCLUDING HOURS/MINUTES/SECONDS)
         when = []*6
@@ -136,7 +185,7 @@ class stardate:
         #     to just the incomplete year?
         #   - math.floor(H/60 - (H/60)/360)
         #   -
-        day = math.floor(Hours/60)
+        day = math.floor(Hours/30)
         when[1] = self.decToHex(day)
 
         # convert hours
@@ -144,3 +193,8 @@ class stardate:
 
         return when
 
+    def calcDateJpart(self, Jules: dt.date):
+        # take parts of the date and calculate the stardate (EXCLUDING HOURS/MINUTES)
+        when = [" "]*6
+
+        return when

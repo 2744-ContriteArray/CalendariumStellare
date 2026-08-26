@@ -4,8 +4,9 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/stardate/.venv" />
       <excludeFolder url="file://$MODULE_DIR$/stardate/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/stardate/.venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.14 (CalendariumStellare) (2)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="$MODULE_DIR$/.venv" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
