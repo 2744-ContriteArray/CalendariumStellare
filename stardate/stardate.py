@@ -32,6 +32,7 @@ secInMin = 60
 
 # zero day in Julian Calendar
 zeroDayJules = datetime.datetime(1970, 7, 31, 0, 0, 0)
+zeroDayJinc = datetime.date(1970, 7, 31)
 
 
 # Functions
@@ -203,6 +204,7 @@ class stardate:
         # SH = H mod 30 to take the remainder of completed days
         StellarHour = H%30
         when[2] = str(StellarHour)
+        when[3] = "."
 
         # Calculate stellar minutes
 
@@ -217,6 +219,25 @@ class stardate:
     def calcDateJpart(self, Jules: dt.date):
         # take parts of the date and calculate the stardate (EXCLUDING HOURS/MINUTES)
         when = [" "]*6
+        when[3] = "."
+
+        # calculate the days since zero. this operation
+        # returns a dt.timedelta obj that contains the
+        # difference in days, hours, minutes, etc
+        delta = Jules - zeroDayJinc
+        # calculate the hours since zero
+        Y = Jules.year - zeroDayJinc.year
+
+        H = delta.days*24
+
+        # calculate the stellar year and convert to hex
+        StellarYear = math.floor((H/30 - Y*0.25)/360)
+        when[0] = self.decToHex(StellarYear)
+
+
+        # calculate days and then take the remainder of dividing that by 360
+        StellarDay = math.floor(H/30 - Y*0.25)%360
+        when[1] = self.decToHex(StellarDay)
 
         return when
 
