@@ -19,6 +19,19 @@ import math
 #   - https://docs.python.org/3/library/datetime.html
 # [*] function to convert gregorian (with time) to Julian
 # [*] function to convert greg to jules (sans clock)
+# [] Verification methods
+#   [] Is stardate equivalent to greg/jule year?
+#       - how take parameters? take any at all? what use cases?
+#       - called when self.datum or self.Gregorian are changed to keep them consistent
+#       - if returns false (meaning their not equivalent) update the old to match the new
+#   [] validity of stardate
+#       - date info passed through __int__ and setters, need to verify that supplied info follows format
+#       - called in setter methods
+#       - if returns false, add handling to setters
+# [] Handling in __init__ for non-default values
+#   [*] add parameter for stardate info
+#   [] verify congruency, handle incongruence
+#   [] if one is default and other not, calculate and replace default
 
 
 # Constants
@@ -79,16 +92,22 @@ class stardate:
     datum = []*6
     Gregorian: dt.datetime
 
-    def __init__(self, when=dt.datetime(1970,1,1,0,0,0)):
+    def __init__(self, when=dt.datetime(1970,1,1,0,0,0), Stellar=["00"]*6):
         # initialize the object
         self.datum[3] = '.'
         self.Gregorian = when
+        if Stellar is not None:
+            for i in range(len(self.datum)):
+                if self.datum[i] == ".":
+                    continue
+                else:
+                    self.datum[i] = Stellar[i]
 
         # Convert when to Julian and then to stardate
         converted = self.calcDateG(when)
 
         # assign self.datum
-        self.setStardate(self, converted)
+        self.setStardate(converted)
 
     def getStardate(self):
         return self.datum
@@ -122,8 +141,11 @@ class stardate:
 
 
     # Set the object's year to the converted Stellar Year
-    def setYear(self, when: str):
+    def setStarYear(self, when: str):
         self.datum[0] = when
+
+    def getStarYear(self):
+        return self.datum[0]
 
     # Set the object's year to the unconverted Gregorian year
     def conv_setYear(self, when: dt.datetime):
