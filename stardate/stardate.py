@@ -11,9 +11,9 @@ import math
 # [*] Nail down zero day
 # [] implement zero day and formulae
 # [*] create format for stardates
-# [] Numeric base conversion functions
+# [*] Numeric base conversion functions
 #   [*] Decimal to hex
-#   [] hex to dec
+#   [*] hex to dec
 # [*] function to convert datetime.datetime to int elements
 #   - use datetime.timedelta?
 #   - https://docs.python.org/3/library/datetime.html
@@ -175,8 +175,38 @@ class stardate:
 
         return hex
 
-    def hexToDec(self, hex):
+    def hexToDec(self, hex: str):
+        # PROCESS
+        # Multiply each digit of hex number by 16, raised to the power of its position
+        #   starting from 0
+        # Add up the results of these multiplications
+        # ex. A.4 = (A*16^0) + (4*16^-1) = (10*1) + (4*0.0625) = 10.25
         dec = 0
+        # For to convert the letter digits into decimal ints
+        Letters = {"A": 10, "a": 10, "B": 11, "b": 11, "C": 12, "c": 12,
+                   "D": 13, "d": 13, "E": 14, "e": 14, "F": 15, "f": 15}
+
+        # convert hex
+        power = len(hex)
+        for i in hex:
+            digit = 0
+
+            #handle decimals - unlikely to be necessary but always good to account for
+            if i == ".":
+                power = -1
+                continue
+
+        # handle the letters and cast from str to int
+            if i in Letters:
+                digit = Letters[i]
+            else:
+                digit = int(i)
+
+            # convert digit to decimal and add to the final integer
+            dec += digit*(pow(16,power))
+
+            power -= 1
+
 
         return dec
 
