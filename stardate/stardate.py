@@ -79,15 +79,23 @@ def Conv2Jules(when: stardate):
 
 class stardate:
     datum = []*6
+    Gregorian: dt.datetime
 
-    def __init__(self):
+    def __init__(self, when=dt.datetime(1970,1,1,0,0,0)):
         # initialize the object
         self.datum[3] = '.'
+        self.Gregorian = when
 
-    def getDate(self):
+        # Convert when to Julian and then to stardate
+        converted = self.calcDateG(when)
+
+        # assign self.datum
+        self.setStardate(self, converted)
+
+    def getStardate(self):
         return self.datum
 
-    def setDate(self, when: list):
+    def setStardate(self, when: list):
         for i in when:
             if i == '.':
                 continue
@@ -224,6 +232,9 @@ class stardate:
         # take parts of the date and calculate the stardate (EXCLUDING HOURS/MINUTES)
         when = [" "]*6
         when[3] = "."
+        when[2] = "00"
+        when[4] = "00"
+        when[5] = "00"
 
         # calculate the days since zero. this operation
         # returns a dt.timedelta obj that contains the
