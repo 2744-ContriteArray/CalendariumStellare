@@ -183,14 +183,14 @@ class stardate:
     def calcDateG(self, Greg: dt.datetime):
         when1 = gregToJulianFull(Greg)
 
-        when2 = self.calcDateJ(self, when1)
+        when2 = self.calcDateJ(when1)
         return when2
 
 # NOT including hours/minutes
     def calcDateGpart(self, Greg: dt.date):
         when1 = gregToJulianPart(Greg)
 
-        when2 = self.calcDateJ(when1)
+        when2 = self.calcDateJpart(when1)
 
         return when2
 
