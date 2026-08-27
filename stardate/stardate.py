@@ -58,6 +58,25 @@ def julToGreg(when:dt.datetime):
 def julToGregAbr(when:dt.date):
     return when + dt.timedelta(days=13.0075)
 
+
+## CONVERSION METHODS
+# Run formulae for converting to Julian Calendar
+def Conv2Jules_Part(when: stardate):
+    year = 0
+    month = 0
+    day = 0
+
+    return dt.date(year,month,day)
+
+def Conv2Jules(when: stardate):
+    year = 0
+    month = 0
+    day = 0
+    hour = 0
+    minute = 0
+
+    return dt.datetime(year,month, day, hour, minute)
+
 class stardate:
     datum = []*6
 
@@ -75,22 +94,7 @@ class stardate:
             else:
                     self.datum[i] = when[i]
 
-## CONVERSION METHODS
-# Run formulae for converting from Julian Calendar
-#    def __ConvYear(self, Jules: dt.datetime):
-#        year = " "
 
-#        return year
-
-#    def __ConvDay(self, Jules: dt.datetime):
-#        day = " "
-
-#        return day
-
-#    def __ConvHour(self, Jules: dt.datetime):
-#        hour = " "
-
-#        return hour
 
 ## CALCULATION METHODS
 # Run formulae for calculating independent of other calendars
@@ -188,7 +192,7 @@ class stardate:
 
         # calculate days and then take the remainder of dividing that by 360
         StellarDay = math.floor(H/30 - Y*0.25)%360
-        when[1] = self.decToHex(StellarDay)
+        when[1] = str(StellarDay)
 
         # convert hours
         # Timedelta objects return seconds, not minutes, and our formula requires
@@ -237,7 +241,7 @@ class stardate:
 
         # calculate days and then take the remainder of dividing that by 360
         StellarDay = math.floor(H/30 - Y*0.25)%360
-        when[1] = self.decToHex(StellarDay)
+        when[1] = str(StellarDay)
 
         return when
 
