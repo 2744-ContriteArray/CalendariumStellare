@@ -6,19 +6,11 @@ import math
 # [] Figure out library structure
 #   - what goes into stardate obj and what needs to go elsewhere?
 #   [] setup.py
+#       [*] create
+#       [] populate
 # [] Nail down conversion formulae
-#   [] apply in methods
-# [*] Nail down zero day
-# [] implement zero day and formulae
-# [*] create format for stardates
-# [*] Numeric base conversion functions
-#   [*] Decimal to hex
-#   [*] hex to dec
-# [*] function to convert datetime.datetime to int elements
-#   - use datetime.timedelta?
-#   - https://docs.python.org/3/library/datetime.html
-# [*] function to convert gregorian (with time) to Julian
-# [*] function to convert greg to jules (sans clock)
+#   [] Conversion method(s) from Jul/Greg -> Stardate
+#   [] Conversion method(s) from Stardate -> Jul/Greg
 # [] Verification methods
 #   [] Is stardate equivalent to greg/jule year?
 #       - how take parameters? take any at all? what use cases?
