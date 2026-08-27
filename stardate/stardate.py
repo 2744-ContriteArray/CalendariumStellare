@@ -1,4 +1,3 @@
-import datetime
 import datetime as dt
 import math
 
@@ -34,8 +33,8 @@ import math
 zeroDayGreg = dt.datetime(1970, 8, 13, 0, 0, 0)
 
 # zero day in Julian Calendar
-zeroDayJules = datetime.datetime(1970, 7, 31, 0, 0, 0)
-zeroDayJinc = datetime.date(1970, 7, 31)
+zeroDayJules = dt.datetime(1970, 7, 31, 0, 0, 0)
+zeroDayJinc = dt.date(1970, 7, 31)
 
 
 # Functions
