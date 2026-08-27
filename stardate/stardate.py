@@ -7,28 +7,26 @@ import math
 #   - what goes into stardate obj and what needs to go elsewhere?
 #   [] setup.py
 # [] Nail down conversion formulae
-# [] Nail down zero day
+#   [] apply in methods
+# [*] Nail down zero day
 # [] implement zero day and formulae
-# [] create format for stardates
+# [*] create format for stardates
 # [] Numeric base conversion functions
 #   [*] Decimal to hex
 #   [] hex to dec
-# [] function to convert datetime.datetime to int elements
+# [*] function to convert datetime.datetime to int elements
 #   - use datetime.timedelta?
 #   - https://docs.python.org/3/library/datetime.html
 # [*] function to convert gregorian (with time) to Julian
 # [*] function to convert greg to jules (sans clock)
-# [] implement into calculator functions
-#   [] enter date on greg calendar, get stardate out
-#   [] enter stardate, test validity, and get greg date out
 
 
 # Constants
-daysInYear = 360
-hoursInDay = 30
-minutesInHour = 60
-secInMin = 60
-# zeroDayGreg = datetime()
+# daysInYear = 360
+# hoursInDay = 30
+# minutesInHour = 60
+# secInMin = 60
+zeroDayGreg = dt.datetime(1970, 8, 13, 0, 0, 0)
 
 # zero day in Julian Calendar
 zeroDayJules = datetime.datetime(1970, 7, 31, 0, 0, 0)
