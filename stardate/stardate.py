@@ -4,12 +4,16 @@ import math
 # TODO:
 # [] Figure out library structure
 #   - what goes into stardate obj and what needs to go elsewhere?
-#   [] setup.py
+#   [*] setup.py
 #       [*] create
-#       [] populate
+#       [*] populate
+#   [*] PyPi workflow configurement
 # [] Nail down conversion formulae
 #   [] Conversion method(s) from Jul/Greg -> Stardate
 #   [] Conversion method(s) from Stardate -> Jul/Greg
+#   [] calcDateJ()
+#       [] calculate minutes
+#       [] calculate seconds
 # [] Verification methods
 #   [] Is stardate equivalent to greg/jule year?
 #       - how take parameters? take any at all? what use cases?
@@ -80,19 +84,19 @@ def Conv2Jules(when: stardate):
     return dt.datetime(year,month, day, hour, minute)
 
 class stardate:
-    datum = []*6
-    Gregorian: dt.datetime
+    __datum = [''] * 6
+    __Gregorian: dt.datetime
 
     def __init__(self, when=dt.datetime(1970,1,1,0,0,0), Stellar=["00"]*6):
         # initialize the object
-        self.datum[3] = '.'
-        self.Gregorian = when
+        self.__datum[3] = '.'
+        self.__Gregorian = when
         if Stellar is not None:
-            for i in range(len(self.datum)):
-                if self.datum[i] == ".":
+            for i in range(len(self.__datum)):
+                if self.__datum[i] == ".":
                     continue
                 else:
-                    self.datum[i] = Stellar[i]
+                    self.__datum[i] = Stellar[i]
 
         # Convert when to Julian and then to stardate
         converted = self.calcDateG(when)
@@ -101,14 +105,14 @@ class stardate:
         self.setStardate(converted)
 
     def getStardate(self):
-        return self.datum
+        return self.__datum
 
     def setStardate(self, when: list):
         for i in when:
             if i == '.':
                 continue
             else:
-                    self.datum[i] = when[i]
+                    self.__datum.append(i)# = when[i]
 
 
 
@@ -133,38 +137,45 @@ class stardate:
 
     # Set the object's year to the converted Stellar Year
     def setStarYear(self, when: str):
-        self.datum[0] = when
+        self.__datum[0] = when
 
     def getStarYear(self):
-        return self.datum[0]
+        return self.__datum[0]
 
     # Set the object's year to the unconverted Gregorian year
     def conv_setYear(self, when: dt.datetime):
         JC = gregToJulianFull(when)
-        self.datum[0] = self.calcDateJ(JC)[0]
+        self.__datum[0] = self.calcDateJ(JC)[0]
 
     def decToHex(self, dec: int):
-        hex = ""
-        buff = []
+        hexa = ""
+        buff = ['']
         numLett = ['A', 'B', 'C', 'D', 'E', 'F']
 
         # do the math
+        #iter = 0
         while dec > 0:
             # if the remainder > 9, it's a letter not 10-16
             if (dec%16) >= 10 and not((dec%16) > 15):
+                #buff[iter] = numLett[(dec%16)-10]
                 buff.append(numLett[(dec%16)-10])
             else:
                 # remainder is not >9
-                buff.append(dec%16)
+                #buff[iter] = dec%16
+                buff.append(str(dec%16))
 
             # amend dec to reflect dec/16 without the remainder as floats
             dec = math.floor(dec/16)
 
-        # assemble the remainders into the hex number
-        for i in range(5, 0, -1):
-            hex += buff[i]
+            #iter += 1
 
-        return hex
+        # assemble the remainders into the hex number
+        # THROWS LIST INDEX OUT OF RANGE ERROR
+        #print("in decToHex\n len(buff[]) = ", len(buff))
+        for i in range(len(buff)-1, 0, -1):
+            hexa += str(buff[i])
+
+        return hexa
 
     def hexToDec(self, hex: str):
         # PROCESS
@@ -217,7 +228,7 @@ class stardate:
 
     def calcDateJ(self, Jules: dt.datetime):
         # take the parts of the date and calculate the stardate (INCLUDING HOURS/MINUTES/SECONDS)
-        when = []*6
+        when = ['']*6
 
         # calculate the days since zero. this operation
         # returns a dt.timedelta obj that contains the
