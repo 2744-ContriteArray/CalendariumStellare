@@ -27,6 +27,9 @@ import math
 #   [*] add parameter for stardate info
 #   [] verify congruency, handle incongruence
 #   [] if one is default and other not, calculate and replace default
+# [] set up documentation string stubs
+# [] Documentation
+#   - in README or in separate file(s)?
 
 
 # Constants
@@ -43,7 +46,7 @@ zeroDayJinc = dt.date(1970, 7, 31)
 
 # Functions
 
-# purpose: convert gregorian date (including time of day) to Julian Calendar
+# purpose: convert Gregorian date (including time of day) to Julian Calendar
 def gregToJulianFull(when: dt.datetime):
     # Basic conversion for dates between 1901 and 2099 is Gregorian date minus 13 days
     # the gap in days grows by 3 every 400 years (0.0075 days per year)
@@ -177,7 +180,8 @@ class stardate:
 
         return hexa
 
-    def hexToDec(self, hex: str):
+    @staticmethod
+    def hexToDec(hexaD: str):
         # PROCESS
         # Multiply each digit of hex number by 16, raised to the power of its position
         #   starting from 0
@@ -189,8 +193,8 @@ class stardate:
                    "D": 13, "d": 13, "E": 14, "e": 14, "F": 15, "f": 15}
 
         # convert hex
-        power = len(hex)
-        for i in hex:
+        power = len(hexaD)
+        for i in hexaD:
             digit = 0
 
             #handle decimals - unlikely to be necessary but always good to account for
@@ -277,6 +281,9 @@ class stardate:
         # Calculate stellar seconds
 
         # when[5] =
+
+        when[4] = "00"
+        when[5] = "00"
 
         return when
 
