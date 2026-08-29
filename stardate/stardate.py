@@ -251,19 +251,13 @@ class stardate:
         # calculate the hours since zero
         Y = Jules.year - zeroDayJules.year
 
-        H = (delta.days*24)
+        H = math.floor((delta.days*24) + (delta.seconds/60)/60)
 
         # calculate the stellar year and convert to hex
         StellarYear = math.floor((H/30 - Y*0.25)/360)
         when[0] = self.decToHex(StellarYear)
 
         # convert days (floor it to keep it whole)
-        # TODO
-        # [] refine formula for days
-        #   - how do we whittle the days elapsed down
-        #     to just the incomplete year?
-        #   - math.floor(H/60 - H/30)%360
-
         # calculate days and then take the remainder of dividing that by 360
         StellarDay = math.floor(H/30 - Y*0.25)%360
         when[1] = str(StellarDay)
@@ -272,7 +266,11 @@ class stardate:
         # Timedelta objects return seconds, not minutes, and our formula requires
         # minutes. take those seconds since 0day and
         # divide by 60 in order to yield minutes
-        M = math.floor(delta.seconds/60)
+        print("In calcDateJ()")
+        M = math.floor((delta.seconds/60)%60)
+        print("M = ", M)
+        S = delta.seconds%60
+        print("S = ", S)
 
         # D (Julian days elapsed) = floor(Julian hours elapsed/30)
         # Y (Julian years elapsed) = floor(D/360)
@@ -284,16 +282,34 @@ class stardate:
         when[2] = str(StellarHour)
         when[3] = "."
 
+
         # Calculate stellar minutes
+            # OPTION 1
+                # Take Y and perform f(Y)=floor(Y*365 - Y*0.25)*24 to yield the total hours
+                    # H += f(Y)
+                # Take H and multiply by 60 to turn it into minutes
+                # Subtract that from M to get the adjusted remaining minutes
+            # OPTION 2
+                # M = math.floor(delta.seconds/60)
+                # H2 = M/60
+            # OPTION 3
+                # SM = M
+                # SS = S
 
         # when[4] =
 
         # Calculate stellar seconds
 
         # when[5] =
+        if M < 10:
+            when[4] = "0"+str(M)
+        else:
+            when[4] = str(M)#"00"
 
-        when[4] = "00"
-        when[5] = "00"
+        if S < 10:
+            when[5] = "0"+str(S)
+        else:
+            when[5] = str(S)#"00"
 
         return when
 
