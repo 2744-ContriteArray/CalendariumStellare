@@ -10,12 +10,12 @@ import math
 #   [*] PyPi workflow configurement
 #   [] Nail down conversion formulae
 #   [] Conversion method(s) from Jul/Greg -> Stardate
-#   [] Conversion method(s) from Stardate -> Jul/Greg
+#   [*] Conversion method(s) from Stardate -> Jul/Greg
 #   [] calcDateJ()
-#       [] calculate minutes
-#       [] calculate seconds
+#       [*] calculate minutes
+#       [*] calculate seconds
 #       [] Verification methods
-#   [] Is stardate equivalent to greg/jule year?
+#   [] Is given stardate equivalent to given greg/jule year?
 #       - how take parameters? take any at all? what use cases?
 #       - called when self.datum or self.Gregorian are changed to keep them consistent
 #       - if returns false (meaning their not equivalent) update the old to match the new
@@ -157,8 +157,8 @@ class stardate:
         JC = self.gregToJulianFull(when)
         self.__datum[0] = self.calcDateJ(JC)[0]
 
-    # Should this method be static? Private?
-    def decToHex(self, dec: int):
+    @staticmethod
+    def decToHex(dec: int):
         hexa = ""
         buff = ['']
         numLett = ['A', 'B', 'C', 'D', 'E', 'F']
@@ -238,8 +238,8 @@ class stardate:
         return when2
 
     #TODO
-    # [] Implement formula for calculating stellar minutes
-    # [] Implement formula for calculating stellar seconds
+    # [*] Implement formula for calculating stellar minutes
+    # [*] Implement formula for calculating stellar seconds
     def calcDateJ(self, Jules: dt.datetime):
         # take the parts of the date and calculate the stardate (INCLUDING HOURS/MINUTES/SECONDS)
         when = ['']*6
@@ -266,11 +266,8 @@ class stardate:
         # Timedelta objects return seconds, not minutes, and our formula requires
         # minutes. take those seconds since 0day and
         # divide by 60 in order to yield minutes
-        print("In calcDateJ()")
         M = math.floor((delta.seconds/60)%60)
-        print("M = ", M)
         S = delta.seconds%60
-        print("S = ", S)
 
         # D (Julian days elapsed) = floor(Julian hours elapsed/30)
         # Y (Julian years elapsed) = floor(D/360)
@@ -342,3 +339,41 @@ class stardate:
         return when
 
     #def calcDateInd(self):
+
+class starDelta:
+    years_Int: int
+    StarYears: str
+
+    Days_Int: int
+    StarDays: str
+
+    Hours_Int: int
+    StarHours: str
+
+    Minutes_Int: int
+    StarMin: str
+
+    Seconds_Int: int
+    StarSecs: str
+
+    def __init(self, pointA: stardate, pointB: stardate):
+        self.years_Int = pointA.hexToDec(pointB.getStarYear()) - pointA.hexToDec(pointA.getStarYear())
+        self.StarYears = pointB.decToHex(self.years_Int)
+        FirstDate = pointA.getStardate()
+        ThenDate = pointB.getStardate()
+
+        # calculate delta in days
+        self.Days_Int = int(ThenDate[1]) - int(FirstDate[1])
+        self.StarDays = stardate.decToHex(self.Days_Int)
+
+        # calculate delta in hours
+        self.Hours_Int = int(ThenDate[2]) - int(FirstDate[2])
+        self.StarHours = stardate.decToHex(self.Hours_Int)
+
+        # calculate delta in minutes
+        self.Minutes_Int = int(ThenDate[4]) - int(FirstDate[4])
+        self.StarMin = stardate.decToHex(self.Minutes_Int)
+
+        # calculate delta in seconds
+        self.Seconds_Int = int(ThenDate[5]) - int(FirstDate[5])
+        self.StarSecs = stardate.decToHex(self.Seconds_Int)
