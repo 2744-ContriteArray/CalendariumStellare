@@ -195,7 +195,7 @@ class stardate:
                    "D": 13, "d": 13, "E": 14, "e": 14, "F": 15, "f": 15}
 
         # convert hex
-        power = len(hexaD)
+        power = len(hexaD)-1
         for i in hexaD:
             digit: int
 
@@ -243,18 +243,21 @@ class stardate:
     def calcDateJ(self, Jules: dt.datetime):
         # take the parts of the date and calculate the stardate (INCLUDING HOURS/MINUTES/SECONDS)
         when = ['']*6
-
+        print("Now in method calcDateJ()")
         # calculate the days since zero. this operation
         # returns a dt.timedelta obj that contains the
         # difference in days, hours, minutes, etc
         delta = Jules - zeroDayJules
         # calculate the hours since zero
         Y = Jules.year - zeroDayJules.year
+        print("Jules.year - zeroDayJules.year = ", Y)
 
         H = math.floor((delta.days*24) + (delta.seconds/60)/60)
+        print("H = floor(", delta.days, "*24) + (", delta.seconds, "/60)/60) = ", H)
 
         # calculate the stellar year and convert to hex
         StellarYear = math.floor((H/30 - Y*0.25)/360)
+        print("Stellar year = floor((", H, "/30 - ", Y, "*0.25)/360) = ", StellarYear)
         when[0] = self.decToHex(StellarYear)
 
         # convert days (floor it to keep it whole)
