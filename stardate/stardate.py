@@ -207,12 +207,10 @@ class stardate:
         # handle the letters and cast from str to int
             if i in Letters.keys():
                 digit = Letters[i]
+            elif digit is None: # Nullpointer Error Mitigation
+                digit = 0
             else:
                 digit = int(i)
-
-            # Error mitigation
-            if digit is None:
-                digit = 0
 
             # convert digit to decimal and add to the final integer
             dec += digit*(pow(16,power))
