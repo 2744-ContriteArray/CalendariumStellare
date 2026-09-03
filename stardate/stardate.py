@@ -284,11 +284,7 @@ class stardate:
         # Can also be found via H = timedelta.days*24
         # SH = H mod 30 to take the remainder of completed days
         StellarHour = H%30
-        # Format hours
-        if StellarHour > 10:
-            when[2] = "0"+str(StellarHour)
-        else:
-            when[2] = str(StellarHour)
+        when[2] = str(StellarHour)
         when[3] = "."
 
 
